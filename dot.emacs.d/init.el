@@ -16,13 +16,31 @@
 ;;; モード指定 ;;;
 ;;;;;;;;;;;;;;;;;
 
+;;; path setting
+(add-to-list 'load-path "~/.emacs.d/elisp")
+
 ;;; php-mode
-(autoload 'php-mode "php-mode")
-(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+;(autoload 'php-mode "php-mode")
+;(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.php$" . web-mode))
 
 ;;; markdown-mode
 (autoload 'markdown-mode "markdown-mode")
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+
+;;; yaml-mode
+(autoload 'yaml-mode "yaml-mode")
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
+;;; web-mode for .erb
+(add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  )
+(add-hook 'web-mode-hook  'my-web-mode-hook)
 
 ;;; to edit Firefox Extension Code.
 (add-to-list 'auto-mode-alist '("\\.rdf$" . xml-mode))
@@ -65,6 +83,7 @@
 
 ;;; フォントの設定.
 ;(add-to-list 'default-frame-alist '(font . "ricty-12"))
+(add-to-list 'default-frame-alist '(font . "Myrica M-14"))
 
 ;;; Ricty にしたいのに, なぜか日本語が可愛くなるので、回避するよ.
 ;(create-fontset-from-ascii-font
@@ -77,13 +96,13 @@
 
 
 ;;; アルファベットをricty, 日本語をヒラギノでやってみたっ！
-(create-fontset-from-ascii-font
- "ricty-12:weight=normal:slant=normal" nil "rictykakugo")
-(set-fontset-font 
- "fontset-rictykakugo" 'unicode
- (font-spec :family "Hiragino Kaku Gothic ProN" :size 12)
- nil 'append)
-(add-to-list 'default-frame-alist '(font . "fontset-rictykakugo"))
+;(create-fontset-from-ascii-font
+; "ricty-12:weight=normal:slant=normal" nil "rictykakugo")
+;(set-fontset-font 
+; "fontset-rictykakugo" 'unicode
+; (font-spec :family "Hiragino Kaku Gothic ProN" :size 12)
+; nil 'append)
+;(add-to-list 'default-frame-alist '(font . "fontset-rictykakugo"))
 
 ;;; ファイラの初期ディレクトリ
 ;(setq *filer-primary-directory* "~/")
@@ -98,28 +117,28 @@
 (setq ring-bell-function 'ignore)
 
 ;; 全角スペースと改行を表示
-(add-to-list 'load-path "~/.emacs.d/elisp")
-(require 'jaspace)
+;(require 'jaspace)
 ;(setq jaspace-alternate-jaspace-string "□")
-(setq jaspace-alternate-eol-string "\xab\n")
-(setq jaspace-modes (append jaspace-modes
-                            (list 'lisp-mode
-                                  'yaml-mode
-                                  'perl-mode
-                                  'js2-mode
-                                  'javascript-mode
-                                  'python-mode
-                                  'ruby-mode
-                                  'php-mode
-                                  'xml-mode
-                                  'html-mode
-                                  'css-mode
-                                  'text-mode
-                                  'tt-mode
-                                  'fundamental-mode
-                                  'latex-mode
-                                  'arduino-mode
-                                  )))
+;(setq jaspace-alternate-eol-string "\xab\n")
+;(setq jaspace-modes (append jaspace-modes
+;                            (list 'lisp-mode
+;                                  'yaml-mode
+;                                  'perl-mode
+;                                  'js2-mode
+;                                  'javascript-mode
+;                                  'python-mode
+;                                  'ruby-mode
+;                                  'php-mode
+;                                  'xml-mode
+;                                  'html-mode
+;                                  'css-mode
+;                                  'text-mode
+;                                  'tt-mode
+;                                  'fundamental-mode
+;                                  'latex-mode
+;                                  'arduino-mode
+;				  'markdown-mode
+;                                  )))
 
 ;;; 行番号を表示
 (global-linum-mode t)
@@ -151,3 +170,13 @@
   (global-set-key [zenkaku-hankaku] 'ibus-toggle) ;; 半角全角キーで切り替え
   )
 )
+
+;;; コンパイルの際にターミナルを自動スクロールさせる
+(setq compilation-scroll-output t)
+
+;;; パッケージインストールシステムの初期設定
+(package-initialize)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+(require 'magit)
