@@ -12,6 +12,9 @@
 ;;; バックアップファイルを作らない
 (setq backup-inhibited t)
 
+;;; すべてのモードからハードタブを消し去りたい
+(setq-default indent-tabs-mode nil)
+
 ;;;;;;;;;;;;;;;;;
 ;;; モード指定 ;;;
 ;;;;;;;;;;;;;;;;;
@@ -19,10 +22,13 @@
 ;;; path setting
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
+;;; web-mode in blade.php
+(add-to-list 'auto-mode-alist '("\\.blade\\.php$" . web-mode))
+
 ;;; php-mode
 ;(autoload 'php-mode "php-mode")
-;(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.php$" . web-mode))
+(add-to-list 'auto-mode-alist '("!\\(\\.blade\\)\\.php$" . php-mode))
+;(add-to-list 'auto-mode-alist '("\\.php$" . web-mode))
 
 ;;; markdown-mode
 (autoload 'markdown-mode "markdown-mode")
@@ -32,8 +38,8 @@
 (autoload 'yaml-mode "yaml-mode")
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
-;;; web-mode for .erb
-(add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
+;;; web-mode for .html, .erb, .tag
+(add-to-list 'auto-mode-alist '("\\(\\.html\\|\\.erb\\|\\.tag\\)\\'" . web-mode))
 (defun my-web-mode-hook ()
   "Hooks for Web mode."
   (setq web-mode-markup-indent-offset 2)
@@ -60,6 +66,11 @@
 ;;; js2-mode
 (autoload 'js2-mode "js2-mode")
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(defun my-js2-mode-hook ()
+  "Hooks for js2 mode."
+  (setq js2-basic-offset 2)
+  )
+(add-hook 'js2-mode-hook  'my-js2-mode-hook)
 
 
 
@@ -180,3 +191,26 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (require 'magit)
+
+;;; ホームディレクトリからの相対パスを表示する
+(path-headerline-mode t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (js2-mode swift3-mode php-mode ## web-mode scss-mode path-headerline-mode magit))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;;; flycheck を全体で使う
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;;; js2-jsx-mode を使う
+(add-to-list 'auto-mode-alist '("\\.jsx$" . js2-jsx-mode))
