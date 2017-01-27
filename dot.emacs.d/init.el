@@ -64,7 +64,7 @@
 (add-to-list 'auto-mode-alist '("\\.ino$" . arduino-mode))
 
 ;;; js2-mode
-(autoload 'js2-mode "js2-mode")
+;(autoload 'js2-mode "js2-mode")
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (defun my-js2-mode-hook ()
   "Hooks for js2 mode."
@@ -72,7 +72,21 @@
   )
 (add-hook 'js2-mode-hook  'my-js2-mode-hook)
 
+;;; Java-mode
+(defun my-java-mode-hook ()
+  "Hooks for java mode."
+  (setq c-basic-offset 4
+        tab-width 4
+        intent-tabs-mode nil)
+  )
+(add-hook 'java-mode-hook 'my-java-mode-hook)
 
+;;; xml-mode
+(defun my-nxml-mode-hook ()
+  "Hooks for xml mode."
+  (setq indent-tabs-mode nil)
+  )
+(add-hook 'nxml-mode-hook 'my-nxml-mode-hook)
 
 ;;; タイトルバーにファイル名を表示する
 ;(setq frame-title-format (format "emacs@%s : %%f" (system-name)))
