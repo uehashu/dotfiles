@@ -113,7 +113,7 @@
 ;;; Ricty にしたいのに, なぜか日本語が可愛くなるので、回避するよ.
 ;(create-fontset-from-ascii-font
 ; "ricty-12:weight=normal:slant=normal" nil "rictyricty")
-;(set-fontset-font 
+;(set-fontset-font
 ; "fontset-rictyricty" 'unicode
 ; (font-spec :family "Ricty" :size 12)
 ; nil 'append)
@@ -123,7 +123,7 @@
 ;;; アルファベットをricty, 日本語をヒラギノでやってみたっ！
 ;(create-fontset-from-ascii-font
 ; "ricty-12:weight=normal:slant=normal" nil "rictykakugo")
-;(set-fontset-font 
+;(set-fontset-font
 ; "fontset-rictykakugo" 'unicode
 ; (font-spec :family "Hiragino Kaku Gothic ProN" :size 12)
 ; nil 'append)
@@ -183,7 +183,7 @@
 
 
 ;;; 各 OS ごとの設定
-(cond 
+(cond
  ((string-match "apple-darwin" system-configuration) ;; Mac 用の設定
   ()
   )
@@ -228,3 +228,6 @@
 
 ;;; js2-jsx-mode を使う
 (add-to-list 'auto-mode-alist '("\\.jsx$" . js2-jsx-mode))
+
+;;; 無駄な行末の空白と文末空行を，保存の際に自動的に削除する
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
